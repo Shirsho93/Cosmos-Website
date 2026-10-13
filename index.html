@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#03040b" />
+  <meta name="description" content="An interactive journey through the Solar System, the Milky Way and the wider universe, illustrated with NASA imagery." />
+  <title>Cosmos — An Interactive Journey Through Space</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300..800&family=Inter:wght@300..700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <script>
+    // Hide-until-revealed styles only apply under .js. If main.js never boots
+    // (e.g. opened via file://, which blocks module scripts), drop it so content shows.
+    document.documentElement.classList.add('js')
+    setTimeout(() => {
+      if (!document.documentElement.classList.contains('booted')) {
+        document.documentElement.classList.remove('js')
+      }
+    }, 4000)
+  </script>
+</head>
+<body>
+  <div class="progress" aria-hidden="true"></div>
+
+  <header class="nav">
+    <a href="#hero" class="brand"><span class="brand-orb"></span>COSMOS</a>
+    <nav>
+      <a href="#solar">Solar System</a>
+      <a href="#atlas">Atlas</a>
+      <a href="#weight">Worlds</a>
+      <a href="#light">Light</a>
+      <a href="#milkyway">Milky Way</a>
+      <a href="#scale">Scale</a>
+      <a href="#deepfield">Deep Field</a>
+      <a href="#timeline">Timeline</a>
+      <a href="#gallery">Gallery</a>
+    </nav>
+    <button class="nav-toggle" aria-label="Open menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section id="hero" class="hero">
+      <canvas id="starfield" aria-hidden="true"></canvas>
+      <div class="hero-content">
+        <p class="kicker reveal">An interactive journey</p>
+        <h1 class="hero-title reveal">
+          <span>From our</span>
+          <span><em>backyard</em> to the</span>
+          <span>edge of time</span>
+        </h1>
+        <p class="hero-sub reveal">Fly through the Solar System, spin the Milky Way, and zoom out to the deepest images ever taken, illustrated with NASA imagery.</p>
+        <a href="#solar" class="btn btn-primary reveal">Begin the journey ↓</a>
+      </div>
+      <ul class="hero-stats">
+        <li><strong data-count="8">0</strong><span>planets orbit the Sun</span></li>
+        <li><strong data-count="100" data-suffix="–400 bn">0</strong><span>stars in the Milky Way</span></li>
+        <li><strong data-count="2" data-suffix=" trillion">0</strong><span>galaxies, by one estimate</span></li>
+        <li><strong data-count="13.8" data-decimals="1" data-suffix=" bn yrs">0</strong><span>age of the universe</span></li>
+      </ul>
+      <p class="hint">Move your mouse to steer · scroll to warp</p>
+    </section>
+
+    <!-- ================= SOLAR SYSTEM ================= -->
+    <section id="solar" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 01</p>
+        <h2>The Solar System</h2>
+        <p>A live, interactive orrery. Drag to orbit, click the scene then scroll to zoom, and pick any world to learn about it. Sizes and distances are compressed so everything fits on screen.</p>
+      </div>
+
+      <div class="orrery reveal">
+        <div id="orrery-canvas" class="orrery-canvas"></div>
+        <div class="orrery-labels" aria-hidden="true"></div>
+
+        <div class="orrery-controls glass">
+          <button class="icon-btn" id="orrery-play" aria-label="Pause">❚❚</button>
+          <label class="speed">
+            <span>Speed</span>
+            <input id="orrery-speed" type="range" min="0" max="100" value="40" />
+            <output id="orrery-speed-label">1 day / s</output>
+          </label>
+          <label class="toggle"><input type="checkbox" id="toggle-orbits" checked /> Orbits</label>
+          <label class="toggle"><input type="checkbox" id="toggle-labels" checked /> Labels</label>
+          <button class="chip" id="orrery-reset">Reset view</button>
+        </div>
+
+        <div class="planet-chips" role="tablist" aria-label="Choose a world"></div>
+
+        <aside class="planet-panel glass" aria-live="polite" hidden>
+          <button class="panel-close" aria-label="Close">×</button>
+          <figure>
+            <img alt="" loading="lazy" />
+            <figcaption></figcaption>
+          </figure>
+          <p class="panel-kind"></p>
+          <h3 class="panel-name"></h3>
+          <p class="panel-blurb"></p>
+          <dl class="panel-facts"></dl>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ================= PLANET ATLAS ================= -->
+    <section id="atlas" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 02</p>
+        <h2>Planet atlas</h2>
+        <p>Hover over, tap or tab to any world to see its vital statistics. The spheres show relative size. The gaps between them are not to scale.</p>
+      </div>
+      <div class="atlas reveal"></div>
+    </section>
+
+    <!-- ================= WEIGHT ================= -->
+    <section id="weight" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 03</p>
+        <h2>Your weight across worlds</h2>
+        <p>Gravity changes from world to world. Enter your weight and see how heavy you would feel standing on each one. (On the gas giants, “standing” means hovering at the cloud tops.)</p>
+      </div>
+      <form class="weight-form glass reveal" onsubmit="return false">
+        <label for="weight-input">My weight on Earth</label>
+        <div class="weight-input">
+          <input id="weight-input" type="number" min="1" max="1000" value="70" inputmode="decimal" />
+          <div class="unit-switch" role="radiogroup" aria-label="Unit">
+            <button type="button" class="active" data-unit="kg">kg</button>
+            <button type="button" data-unit="lb">lb</button>
+          </div>
+        </div>
+      </form>
+      <div class="weight-grid"></div>
+    </section>
+
+    <!-- ================= LIGHT ================= -->
+    <section id="light" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 04</p>
+        <h2>Riding a beam of light</h2>
+        <p>Light travels 299,792 km every second, the fastest anything can go. Even so, crossing the Solar System takes hours. Launch a photon from the Sun and watch it go.</p>
+      </div>
+      <div class="light-journey glass reveal">
+        <div class="light-readout">
+          <div><span class="label">Elapsed</span><strong id="light-time">0 s</strong></div>
+          <div><span class="label">Distance</span><strong id="light-distance">0 km</strong></div>
+          <div><span class="label">Passing</span><strong id="light-passing">The Sun</strong></div>
+        </div>
+        <div class="light-track">
+          <div class="light-sun"></div>
+          <div class="light-beam"></div>
+          <div class="light-photon"></div>
+          <div class="light-stops"></div>
+        </div>
+        <div class="light-controls">
+          <button class="btn btn-primary" id="light-go">Launch photon</button>
+          <label>Time warp
+            <select id="light-warp">
+              <option value="1">1× (real time)</option>
+              <option value="60">60×</option>
+              <option value="600" selected>600×</option>
+              <option value="3600">3,600×</option>
+            </select>
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= MILKY WAY ================= -->
+    <section id="milkyway" class="section milkyway">
+      <div id="galaxy-canvas" class="galaxy-canvas"></div>
+      <div class="galaxy-overlay">
+        <div class="section-head reveal">
+          <p class="kicker">Chapter 05</p>
+          <h2>The Milky Way</h2>
+          <p>A barred spiral of 100–400 billion stars, about 100,000 light-years across. Our Sun sits in a minor arm roughly 26,000 light-years from the centre and takes about 230 million years to make one lap.</p>
+        </div>
+        <div class="galaxy-controls reveal">
+          <button class="chip active" data-view="tilt">Overview</button>
+          <button class="chip" data-view="top">Face-on</button>
+          <button class="chip" data-view="edge">Edge-on</button>
+          <button class="chip" data-view="sun">Find the Sun</button>
+        </div>
+        <figure class="galaxy-photo glass reveal">
+          <img src="https://images-assets.nasa.gov/image/PIA12348/PIA12348~medium.jpg" alt="The centre of the Milky Way seen by Hubble, Spitzer and Chandra" loading="lazy" />
+          <figcaption>Our galaxy’s core, seen by NASA’s Great Observatories (Hubble, Spitzer and Chandra). <span>NASA/JPL-Caltech/ESA/CXC/STScI</span></figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ================= SCALE ================= -->
+    <section id="scale" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 06</p>
+        <h2>Zooming out</h2>
+        <p>Drag the slider to step outward, from a single planet to the observable universe.</p>
+      </div>
+      <div class="scale-stage reveal">
+        <div class="scale-frames"></div>
+        <div class="scale-info glass">
+          <p class="scale-step"></p>
+          <h3 class="scale-name"></h3>
+          <p class="scale-size"></p>
+          <p class="scale-note"></p>
+          <p class="scale-credit"></p>
+        </div>
+      </div>
+      <div class="scale-slider reveal">
+        <input id="scale-range" type="range" min="0" max="8" step="0.01" value="0" aria-label="Cosmic scale" />
+        <div class="scale-ticks"></div>
+      </div>
+    </section>
+
+    <!-- ================= DEEP FIELD ================= -->
+    <section id="deepfield" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 07</p>
+        <h2>A keyhole to the early universe</h2>
+        <p>Hubble stared at a tiny patch of sky, smaller than a grain of sand held at arm’s length, and found it full of thousands of galaxies. Move the lens to explore.</p>
+      </div>
+      <div class="deepfield reveal" style="--img: url('https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001061/GSFC_20171208_Archive_e001061~large.jpg')">
+        <img src="https://images-assets.nasa.gov/image/GSFC_20171208_Archive_e001061/GSFC_20171208_Archive_e001061~medium.jpg" alt="Hubble Ultra Deep Field in ultraviolet, visible and infrared light" />
+        <div class="lens" aria-hidden="true"></div>
+        <p class="deepfield-credit">Hubble Ultra Deep Field (UV–IR) · NASA, ESA</p>
+      </div>
+    </section>
+
+    <!-- ================= TIMELINE ================= -->
+    <section id="timeline" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 08</p>
+        <h2>13.8 billion years in one scroll</h2>
+      </div>
+      <ol class="timeline">
+        <div class="timeline-line"><span></span></div>
+      </ol>
+    </section>
+
+    <!-- ================= GALLERY ================= -->
+    <section id="gallery" class="section">
+      <div class="section-head reveal">
+        <p class="kicker">Chapter 09</p>
+        <h2>Gallery of the cosmos</h2>
+        <p>Highlights, plus a live search of NASA’s Image and Video Library.</p>
+      </div>
+
+      <div class="apod glass reveal" hidden>
+        <div class="apod-media"></div>
+        <div class="apod-text">
+          <p class="kicker">NASA Astronomy Picture of the Day</p>
+          <h3 class="apod-title"></h3>
+          <p class="apod-date"></p>
+          <p class="apod-explanation"></p>
+          <p class="apod-credit"></p>
+        </div>
+      </div>
+
+      <div class="featured-grid"></div>
+
+      <form class="search glass reveal" id="search-form">
+        <input type="search" id="search-input" placeholder="Search NASA images — try “nebula”, “aurora”, “Saturn rings”…" aria-label="Search NASA images" />
+        <button class="btn btn-primary" type="submit">Search</button>
+      </form>
+      <div class="search-chips">
+        <button class="chip" data-q="nebula">Nebulae</button>
+        <button class="chip" data-q="spiral galaxy">Galaxies</button>
+        <button class="chip" data-q="aurora from space station">Auroras</button>
+        <button class="chip" data-q="Saturn rings Cassini">Saturn</button>
+        <button class="chip" data-q="Mars rover panorama">Mars</button>
+        <button class="chip" data-q="solar flare">Solar flares</button>
+      </div>
+      <p class="search-status" aria-live="polite"></p>
+      <div class="results-grid"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Built with Three.js. Imagery from the <a href="https://images.nasa.gov" target="_blank" rel="noopener">NASA Image and Video Library</a> and <a href="https://apod.nasa.gov" target="_blank" rel="noopener">APOD</a>; credits are shown with each image.</p>
+    <p>NASA does not endorse this site. Planet visuals in the 3D scenes are procedurally generated.</p>
+  </footer>
+
+  <div class="lightbox" hidden>
+    <button class="lightbox-close" aria-label="Close">×</button>
+    <figure>
+      <img alt="" />
+      <figcaption></figcaption>
+    </figure>
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
